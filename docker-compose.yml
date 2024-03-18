@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_container
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./mysql-conf:/etc/mysql/conf.d
+    ports:
+      - "3306:3306"
+
+  dbeaver:
+    image: dbeaver/dbeaver-ce:latest
+    container_name: dbeaver_container
+    restart: always
+    depends_on:
+      - mysql
+    volumes:
+      - ./dbeaver-workspace:/home/dbeaver/workspace
+    ports:
+      - "127.0.0.1:49160:49160"
+      - "127.0.0.1:49161:49161"
